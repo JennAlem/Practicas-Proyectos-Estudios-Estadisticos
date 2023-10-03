@@ -1,0 +1,644 @@
+---
+documentclass: article
+header-includes:
+- \usepackage{graphicx}
+- \usepackage{amsmath}
+- \usepackage{xcolor}
+- \usepackage[utf8]{inputenc}
+- \usepackage{fancyheadings}
+- \pagestyle{fancy}
+- \usepackage{amssymb}
+- \usepackage{amsfonts}
+- \usepackage[a4paper, left=2.54cm, right=2.54cm, top=2.54cm, bottom=2.54cm]{geometry}
+- \usepackage{blindtext}
+- \usepackage{setspace}
+- \renewcommand{\baselinestretch}{2}
+
+
+
+#- \usepackage[spanish]{babel}
+- \usepackage{fancyhdr}
+- \pagestyle{fancy}
+- \fancyhead{}
+- \usepackage{float}
+- \lfoot{\textit{Proyectos De Estudios Estad\'istico}}
+- \rfoot{\thepage}
+ 
+#title: "Prueba Z en Python"
+format: pdf
+editor: visual
+lang: es-ES
+---
+
+
+
+```{=tex}
+\newpage
+\begin{titlepage}
+\centering
+{\bfseries\LARGE Universidad De El Salvador}\\ 
+\vspace{0.5cm}
+
+{\bfseries\LARGE Facultad Multidisciplinaria De Occidente\par}
+\vspace{0.5cm}
+{\bfseries\LARGE Departamento De Matem\'atica \par}
+\vspace{0.5cm}
+{\bfseries\LARGE Licenciatura En Estad\'istica \par}
+\vspace{0.5cm}
+{\includegraphics[width=0.2\textwidth]{minerva2.png}\par}
+\vspace{0.5cm}
+{\bfseries\LARGE Aplicación Del Análisis De Regresión Logística Multinomial Para Predecir Trastornos Del Sueño \par}
+\vspace{0.5cm}
+{\bfseries\LARGE Docente: \par}
+{\bfseries\LARGE Licenciado Jaime Isaac Peña \par}
+\vspace{0.5cm}
+{\bfseries\LARGE Presentado por: \par}
+{\bfseries\LARGE Jenniffer Beatriz Alem\'an Castillo \par}
+\vfill
+{\bfseries\Large   \par}
+\thispagestyle{empty}
+\end{titlepage}
+\thispagestyle{empty}
+\newpage
+\thispagestyle{empty}
+\newpage
+```
+
+
+```{=tex}
+
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+
+\section[Análisis De Regresión Logística Multinomial De Los Trastornos Del Sueño]{\centering\bfseries Análisis De Regresión Logística Multinomial De Los Trastornos Del Sueño}
+
+La regresión logística multinomial es una técnica de análisis de datos que se utiliza para predecir la probabilidad de que una variable dependiente categórica pertenezca a una categoría específica en función de varias variables independientes. Esta técnica se utiliza en diversas áreas, como la medicina, la psicología y la sociología, para analizar variables dependientes categóricas y relacionarlas con variables independientes. La regresión logística multinomial generaliza el método de regresión logística para problemas multiclase, es decir, con más de dos posibles resultados discretos. La regresión logística multinomial se basa en la relación entre una variable dependiente categórica y varias variables independientes. En esta investigación se realizará una aplicación del análisis de regresión logística multinomial para predecir si una persona tiene o no un trastorno del sueño, en este caso se tomará como variable dependiente el desorden del sueño que una persona puede o no presentar y se tendrán en cuenta las categorías apnea del sueño, el insomnio o ningún trastorno del sueño. Las variables independientes serán las características que presentan las personas, como la calidad del sueño de la persona, el nivel de actividad físico o el estrés que la persona presenta, etc. Al analizar estas características, se puede predecir si una persona presenta un trastorno del sueño. La aplicación de la regresión logística multinomial para la identificación de personas con trastorno de sueño puede ser de gran utilidad en la prevención de problemas de salud de una persona, en este caso en específico se tomará en cuenta las siguientes variables para realizar el análisis:
+
+\begin{enumerate}
+  \item Genero
+  \item Edad
+  \item Horas de sueño
+  \item Calidad del sueño
+  \item Nivel de actividad física
+  \item Estrés
+  \item Índice de Masa Corporal
+  \item Ritmo cardiaco
+  \item Pasos diarios
+  \item Desorden del sueño
+\end{enumerate}
+
+Los trastornos del sueño pueden afectar la salud de las personas, por lo que es importante identificar a las personas que están más propensas a presentar un trastorno del sueño y prevenir estos trastornos. La regresión logística multinomial es una técnica útil para este propósito, ya que permite evaluar la relación entre una variable dependiente categórica (en este caso, la presencia o ausencia de un trastorno del sueño) y varias variables independientes.
+
+
+```
+
+```{=tex}
+\section[Supuestos De La Regresión Logística Multinomial]{\centering\bfseries Supuestos De La Regresión Logística Multinomial}
+
+Al realizar un análisis de regresión logística multinomial es importante tener en cuenta los supuestos que deben cumplir los datos para que sea viable realizar este tipo de análisis. Algunos de los supuestos que deben cumplirse para realizar un análisis de regresión logística multinomial son:
+
+\begin{enumerate}
+  \item Independencia de las observaciones: las observaciones deben ser independientes entre sí, es decir, que los valores de una observación no deben estar relacionados con los valores de otra observación.
+  \item Ausencia de multicolinealidad: las variables independientes no deben estar altamente correlacionadas entre sí, ya que esto puede afectar la precisión de las estimaciones de los coeficientes.
+  \item Linealidad en los registros logarítmicos: la relación entre las variables independientes y la variable dependiente debe ser lineal en los registros logarítmicos. Ausencia de valores atípicos: los valores atípicos pueden afectar la precisión de las estimaciones de los coeficientes y deben ser identificados y tratados adecuadamente.
+\end{enumerate}
+
+Es importante tener en cuenta que estos supuestos deben ser evaluados antes de realizar el análisis de regresión logística multinomial para garantizar la validez y precisión de los resultados.
+
+
+```
+
+```{=tex}
+\section[Base De Datos Que Se Utilizará]{\centering\bfseries Base De Datos Que Se Utilizará}
+
+```
+
+```{r}
+library(dplyr)
+library(readxl)
+suenio <- read_excel("D:/Beatriz/Ciclo II 2023/Proyectos de Estudios Estadisticos/REGRESIÓN LOGÍSTICA MULTINOMIAL/Analisis al SUEÑO/basevidaOs.xlsx")
+
+base_suenio <- select(suenio, 
+                           "Genero",
+                           "edad",
+                           "horasSueno",
+                           "calidadsueno",
+                           "nivActidadFisica",
+                           "estrés",
+                           "CategoriaIMC",
+                           "ritmocardiaaco",
+                           "pasos diarios",
+                           "desordeSuenio")
+
+head(base_suenio)
+
+```
+
+
+
+```{=tex}
+\section[Análisis Descriptivo De Los Datos]{\centering\bfseries Análisis Descriptivo De Los Datos}
+
+Primero se debe saber la cantidad de filas y columnas por las que está formada la base de datos, además de conocer los nombres de las columnas:
+
+```
+
+```{r}
+
+# Filas y columnas:
+
+dim(base_suenio)
+
+# Nombre de las columnas
+colnames(base_suenio)
+
+```
+
+```{=tex}
+Se tiene 23 variables y 8124 observaciones.
+```
+
+```{r}
+str(base_suenio)
+```
+
+```{r}
+summary(base_suenio)
+
+```
+
+```{=tex}
+\section[Outliers]{\centering\bfseries Outliers}
+
+```
+
+```{r}
+
+boxplot(base_suenio, col = "blue")
+```
+
+```{=tex}
+No se puede observar la salida de todas las variables debido a que la variable "pasos diarios", por lo que se procede a eliminar dicha variable paro poder observar las demás salidas
+
+```
+
+```{r}
+
+sin_pasos <- base_suenio[, -c(9)]
+boxplot(sin_pasos, col = "blue")
+
+```
+
+```{=tex}
+
+Se observa que la variable 'ritmo cardiaco' presenta valores atípicos en el conjunto de datos. Esto se refleja en una amplia variabilidad en los valores de ritmo cardiaco, con algunas personas exhibiendo ritmo cardiaco muy alto y otras presentando valores significativamente bajos. Estos valores extremos en el ritmo cardiaco podrían indicar la presencia de datos atípicos.
+
+\section[Correlación Entre Las Variables]{\centering\bfseries Correlación Entre Las Variables}
+
+```
+
+```{r}
+cor(base_suenio)
+```
+
+
+```{=tex}
+
+Se puede observar que hay algunas variables que presentan una correlación mayor a 0.5 y menor a -0.5, sin embargo, se procederá a seguir con el modelo. 
+
+\section[Aplicación De La Técnica En El Software SPSS]{\centering\bfseries Aplicación De La Técnica En El Software SPSS}
+
+Anteriormente ya se especificaron las variables que se utilizaran en este análisis, sin embargo, es importante conocer la forma en que las variables están codificadas y lo que significan cada variable.
+
+
+```
+
+| No  | Variable                  | Descripción                                                                | Codificación                                   |
+|---------------|---------------|---------------------------|---------------|
+| 1   | Género                    | Sexo de la persona                                                         | 1 = Masculino, 2 = Femenino                    |
+| 2   | Edad                      | La edad de la persona en años                                              |                                                |
+| 3   | Horas de sueño            | La cantidad de horas que la persona duerme por día                         |                                                |
+| 4   | Calidad del sueño         | Una calificación subjetiva de la calidad del sueño                         | escala: 1-10                                   |
+| 5   | Nivel de actividad física | La cantidad de minutos que la persona realiza actividad física diariamente |                                                |
+| 6   | Estrés                    | Una calificación del nivel de estrés experimentado por la persona          | escala: 1-10                                   |
+| 7   | Categoría de IMC          | La categoría de IMC de la persona                                          | 1 = Peso normal, 2 = Sobrepeso, 3 = Obesidad   |
+| 8   | Ritmo cardíaco            | La frecuencia cardíaca en reposo de la persona en latidos por minuto       |                                                |
+| 9   | Pasos diarios             | La cantidad de pasos que la persona da por día                             |                                                |
+| 10  | Desorden del sueño        | La presencia o ausencia de un trastorno del sueño en la persona            | 1 = Ninguno, 2 = Insomnio, 3 = Apnea del Sueño |
+
+
+```{=tex}
+Una vez teniendo claras las variables y la codificación que estas tienen se procede a la importación de los datos en el software de SPSS:
+
+
+\section[Descripción De Los Datos]{\centering\bfseries Descripción De Los Datos}
+
+```
+
+
+![](DescripcionDatos1.png)
+![](MuestraDatos1.png)
+
+
+
+```{=tex}
+Para realizar el análisis de regresión logístico multinomial en este software se debe seleccionar en la parte superior la opción Analizar y a continuación seleccionar la opción de Regresión y por último se selecciona la opción Logística Multinomial. A continuación, se seleccionan las variables independientes y la variable de pendiente, en este caso sería de la siguiente forma:
+
+\textbf{Variable dependiente:}
+
+\begin{enumerate}
+  \item Desorden del sueño
+\end{enumerate}
+  
+\textbf{Variables independientes:}
+
+\begin{enumerate}
+  \item Genero
+  \item Edad
+  \item Horas de sueño
+  \item Calidad del sueño
+  \item Nivel de actividad física
+  \item Estrés
+  \item Índice de masa corporal
+  \item Ritmo cardiaco
+  \item Pasos diarios 
+\end{enumerate}
+
+Se desea investigar si las variables como género, horas de sueño, actividad física, etc. Tienen efecto en poseer algún tipo de desorden de sueño, en este caso esta variable tiene 3 categorías y se toma como referencia la primera categoría (ningún desorden de sueño). Además, no se incluirán las interacciones entre variables en el modelo. Una vez realizado esto se procede aceptar y analizar los resultados obtenidos.
+
+
+
+\section[Resumen De Procesamiento De Casos]{\centering\bfseries Resumen De Procesamiento De Casos}
+
+La tabla de resumen de procesamiento de casos es importante en un análisis de regresión logística multinomial porque proporciona información sobre el número de casos que se han utilizado en el análisis, incluyendo el número de casos que se han excluido debido a datos faltantes o valores atípicos.
+
+
+```
+
+![](ResumenProcesamientoCasos.png){width='350px' align="center"}
+
+```{=tex}
+
+\section[Ajuste Del Modelo]{\centering\bfseries Ajuste Del Modelo}
+
+La tabla de Información de ajuste de los modelos en SPSS es importante en un análisis de regresión logística multinomial porque proporciona información sobre la calidad del ajuste del modelo a los datos. Esta tabla incluye estadísticas como el Chi-cuadrado de Pearson, el logaritmo de la verosimilitud y el criterio de información de Akaike (AIC), que se utilizan para evaluar la bondad de ajuste del modelo. Estas estadísticas permiten comparar diferentes modelos y seleccionar el modelo que mejor se ajuste a los datos.
+
+```
+
+
+![](InformacionAjusteModelo.png)
+
+
+```{=tex}
+Se presenta la tabla donde realiza la prueba de razón de verosimilitud, en donde resulta ser significativa por lo que algún coeficiente de los regresores es significativamente distinto de cero, es decir que influye en la predicción de la variable dependiente.
+
+\section[Prueba De Bondad De Ajuste Del Modelo]{\centering\bfseries Prueba De Bondad De Ajuste Del Modelo}
+
+Las pruebas de bondad de ajuste del modelo y Pseudo R cuadrado son importantes en un análisis de regresión logística multinomial porque proporciona información sobre la bondad de ajuste del modelo a los datos. Las hipótesis de las pruebas de bondad de ajuste en el análisis de regresión logística multinomial son las siguientes:
+
+
+```
+
+$H_{0}:$El modelo ajustado se ajusta bien a los datos.
+
+$H_{1}:$El modelo ajustado no se ajusta bien a los datos.
+
+![](BondadAjuste.png){width='450px' align="center"}
+
+```{=tex}
+Los resultados de la prueba de bondad de ajuste indican que el modelo no se ajusta bien a los datos. El valor Chi-cuadrado de Pearson es alto (486.939) y el valor de desviación también es alto (154.168), lo que indica que las probabilidades predichas se desvían significativamente de las probabilidades observadas. Además, el valor p para la prueba de bondad de ajuste es muy bajo (0.000), lo que indica que el modelo no se ajusta bien a los datos y que las probabilidades predichas se desvían significativamente de las probabilidades observadas.
+
+\section[Evaluación Del Ajuste Del Modelo]{\centering\bfseries Evaluación Del Ajuste Del Modelo} 
+
+El Pseudo R cuadrado es una medida de la bondad de ajuste del modelo, que indica la proporción de la variabilidad en la variable dependiente que es explicada por el modelo. Cuanto mayor sea el valor del Pseudo R cuadrado, mejor será el ajuste del modelo a los datos. 
+
+```
+
+![](RCuadrado.png){width='250px' align="center"}
+
+
+```{=tex}
+Se presentan tres medidas de Pseudo R cuadrado: Cox y Snell, Nagelkerke y McFadden. Los valores de estas medidas oscilan entre 0 y 1, y cuanto más cercanos a 1 sean, mejor será el ajuste del modelo. En este caso, tomando a McFadden observamos que el modelo explica un 60\%  del resultado de la presencia o ausencia de un trastorno de sueño.
+
+\section[Pruebas De La Razón De Verosimilitud]{\centering\bfseries Pruebas De La Razón De Verosimilitud}
+
+La prueba de razón de verosimilitud es importante en un análisis de regresión logística multinomial en SPSS porque se utiliza para evaluar la contribución de cada efecto al modelo. Para cada efecto, se calcula el logaritmo de la verosimilitud -2 y se compara con el logaritmo de la verosimilitud -2 del modelo sin ese efecto. Si la diferencia entre los dos logaritmos de la verosimilitud -2 es significativa, esto indica que el efecto tiene una contribución significativa al modelo. Las hipótesis de las pruebas de la razón de verosimilitud en el análisis de regresión logística multinomial son las siguientes:
+
+```
+
+$H_{0}: $El efecto no tiene una contribución significativa al modelo.
+$H_{1}: $El efecto tiene una contribución significativa al modelo.
+
+![](PruebasRazonVerosimilitud.png){width='425px' align="center"}
+
+
+```{=tex}
+De acuerdo con las hipotesis planteadas y los resultados obtenidos se puede decir que entre los predictores importantes están las variables género, edad, horas de sueño, calidad del sueño y categoría de peso, a continuación, se observan cuanto las variables independientes predicen la dependiente.
+
+\section[Estimación De Los Parámetros]{\centering\bfseries Estimación De Los Parámetros}
+
+La estimación de los parámetros permite conocer los coeficientes de los predictores y su contribución al modelo. Los resultados se utilizan para interpretar la relación entre los predictores y la variable dependiente categórica.
+
+
+```
+
+![](EstimacionParametros.png){width='425px' align="center"}
+
+```{=tex}
+
+La Salida anterior se hace la comparación en la primera sección de la tabla que la persona no tiene ningún desorden de sueño frente a que posee Apnea de sueño o Insomnio.
+El primer predictor es las horas de sueño, puesto que esta predice si la persona posee un trastorno o no de sueño. Con valor de Wald 7.419, el cual asigna la contribución individual de los regresaros a la variable dependiente, y además se observa que es estadísticamente significativo (0.006), luego su respectivo odd ratio (columna Exp(B)) es de 15.47 esto significa que a medida que aumenta las horas de sueño en una unidad, el cambio de probabilidad de una persona de tener insomnio en lugar de no tener ningún trastorno es de 15,47 veces más de probable, en otras palabras es más probable que se desarrolle insomnio si aumenta las horas de sueño. El siguiente predictor es la calidad de sueño, con valor de Wald de 7,63 y su p valor menor al de significancia, es decir que a medida que la calidad de sueno aumenta en una unidad, las probabilidades de tener insomnio en comparación de no tener ningún desorden son de 0.10, por lo que disminuye la probabilidad de tener un desorden de sueño. El tercer predictor es categoríaIMC es decir el peso de la persona, se observa que es significativo en la predicción de la variable dependiente. Esto significa que si la persona aumenta de peso tiene 19,11 veces más de probabilidad de tener insomnio. Finalmente, el género de la persona, a medida que cambia de femenino a masculino la probabilidad de tener insomnio es de 0.12 veces más probable. 
+En la segunda sección se compara apnea del sueño con ningún desorden de sueño, la edad resulta significativa en la predicción de la variable dependiente. Se observa que su p valor es de 0,01 que es menor al de significancia y su valor de Wald de 11,46. Entonces, a medida que aumenta la edad aumenta 1.252 veces la probabilidad de tener apnea en comparación de no tener ningún tipo de desorden. De la misma manera la calidad de Sueño, si disminuye es más probable que posea apnea, es decir que si a calidad de sueño aumenta en una unidad la probabilidad de que la persona tenga apnea es 0.171 veces. Finalmente, categoríaIMC si aumenta de peso en una unidad es 5.15 veces más probable que desarrolle apnea a que no posea ningún trastorno de sueño.
+
+
+```
+
+
+
+
+```{=tex}
+
+\section[Clasificación]{\centering\bfseries Clasificación}
+
+```
+
+![](Clasificacion.png)
+
+
+```{=tex}
+
+La tabla de clasificación muestra el número de observaciones que fueron clasificadas correctamente y el número de observaciones que fueron clasificadas incorrectamente para cada una de las categorías de la variable dependiente. En este caso, la tabla de clasificación muestra que el modelo clasificó correctamente 204 observaciones en la categoría 1, 67 observaciones en la categoría 2 y 64 observaciones en la categoría 3. 
+
+Además, el modelo clasificó incorrectamente 10 observaciones de la categoría 1 como categoría 2, 5 observaciones de la categoría 1 como categoría 3, 7 observaciones de la categoría 2 como categoría 1, 4 observaciones de la categoría 2 como categoría 3, 10 observaciones de la categoría 3 como categoría 1 y 3 observaciones de la categoría 3 como categoría 2.
+
+La precisión del modelo es del 89.6\%  en la predicción de las categorías de la variable dependiente. Esto significa que el modelo clasificó correctamente el 89.6\%  de las observaciones en los datos de entrenamiento. La precisión del modelo se utiliza para evaluar la capacidad del modelo para predecir la variable dependiente y para comparar diferentes modelos.
+
+```
+
+
+
+```{=tex}
+
+\section[Aplicación de la Técnica En El Software RStudio]{\centering\bfseries Aplicación de la Técnica En El Software RStudio}
+
+\textbf{Librerías que se utilizarán} 
+
+```
+
+```{r}
+library(dplyr)
+require(nnet)
+library(pscl)
+
+```
+
+
+```{=tex}
+Antes de aplicar multinom() se debe de tener los nombres de las columnas de la base de datos de forma adecuada, es decir, estos nombres no deben de tener espacios, por lo que hay que proceder a cambiar los nombres que generan problemas. En este caso unicamente la variable "pasos diarios" contiene espacios en su nombre.
+
+```
+
+```{r}
+# Cambiar el nombre de la columna "pasos diarios" a "pasos_diarios"
+colnames(base_suenio)[colnames(base_suenio) == "pasos diarios"] <- "pasos_diarios"
+
+```
+
+```{=tex}
+Ahora se aplica multinom().
+
+La función multinom() se utiliza para ajustar un modelo de regresión logística multinomial a un conjunto de datos y puede tomar una fórmula que especifica la variable dependiente (desordeSuenio) y las variables independientes. El resultado de multinom() es un objeto de modelo que se puede utilizar para hacer predicciones y realizar otras operaciones en el modelo ajustado.
+
+```
+
+```{r}
+multinom.fit <- multinom(desordeSuenio ~
+                           Genero + 
+                           edad + 
+                           horasSueno +
+                           calidadsueno + 
+                           nivActidadFisica + 
+                           estrés + 
+                           CategoriaIMC +
+                           ritmocardiaaco +
+                           pasos_diarios
+                           -1, 
+                         data = base_suenio)
+```
+
+```{=tex}
+El resultado que se muestra indica que el modelo ha convergido, lo que significa que el algoritmo utilizado para ajustar el modelo ha encontrado una solución que satisface los criterios de convergencia. El valor inicial y final que se muestran son los valores de la función de verosimilitud del modelo antes y después del ajuste, respectivamente. En este caso, el valor final es menor que el valor inicial, lo que indica que el modelo ajustado es mejor que el modelo inicial.
+```
+
+```{r}
+summary(multinom.fit)
+```
+
+```{=tex}
+La tabla de coeficientes muestra los valores estimados para cada variable independiente en el modelo, así como el error estándar de cada estimación. Los coeficientes se interpretan como el cambio en la log-odds de la variable dependiente por cada unidad de cambio en la variable independiente correspondiente. Por ejemplo, el coeficiente para Genero=2 da un valor de -2.434412 lo que significa que por cada aumento de una unidad en Genero=2, el logaritmo de las probabilidades de desordeSuenio estar en el nivel 2 (en comparación con el nivel de referencia) disminuye en 2.434412, manteniendo constantes todas las demás variables predictoras. De manera similar, el coeficiente para Genero=3 es 0.864164, lo que significa que por cada aumento de una unidad en Genero=3, el logaritmo de las probabilidades de desordeSuenio estar en el nivel 3 (en comparación con el nivel de referencia) aumenta en 0.864164,
+
+El AIC es un criterio de selección de modelos que se utiliza para comparar diferentes modelos. Un valor bajo de AIC indica que el modelo es mejor ajustado a los datos. En este caso, el valor de AIC es 342.6614, lo que indica que el modelo ajustado es relativamente bueno.
+```
+
+```{=tex}
+
+\section[Exponentes De Los Coeficientes Estimado Del Modelo]{\centering\bfseries Exponentes De Los Coeficientes Estimado Del Modelo}
+
+El código exp(coef(multinom.fit)) en R se utiliza para calcular los exponentes de los coeficientes estimados en un modelo de regresión logística multinomial. Los exponentes de los coeficientes se interpretan como la razón de las probabilidades (odds ratio) de la variable dependiente para cada unidad de cambio en la variable independiente correspondiente. Al tomar el exponencial de los coeficientes, se convierten en odds ratios, lo que facilita la interpretación de los resultados.
+
+```
+
+```{r}
+exp(coef(multinom.fit))
+```
+
+```{=tex}
+En el resultado que se muestra, se presentan los coeficientes exponenciales para cada variable independiente en el modelo. Por ejemplo, para el nivel 2 de la variable dependiente, un aumento de una unidad en la variable Genero disminuye las probabilidades de desordeSuenio en un 91.7\%, mientras que un aumento de una unidad en la variable edad aumenta las probabilidades de desordeSuenio en un 14.7\% . Un aumento de una unidad en la variable horasSueno aumenta las probabilidades de desordeSuenio en un 809\% , mientras que un aumento de una unidad en la variable calidadsueno disminuye las probabilidades de desordeSuenio en un 96.1\% , y asi sucesivamente con los resultados para las demás variables.
+
+```
+
+
+```{=tex}
+
+\section[Probabilidades Ajustadas Para Cada Observación En El Modelo]{\centering\bfseries Probabilidades Ajustadas Para Cada Observación En El Modelo}
+
+El cálculo de las probabilidades ajustadas en un análisis de regresión logística multinomial es importante porque permite estimar la probabilidad de que una observación pertenezca a cada una de las categorías de la variable dependiente, dadas las variables independientes, lo que es útil para evaluar la precisión del modelo, hacer predicciones y tomar decisiones.
+
+```
+
+```{r}
+prob_ajust <- head(probability.table <- fitted(multinom.fit))
+prob_ajust
+
+```
+
+```{=tex}
+Para cada observación, se muestran las probabilidades ajustadas de pertenecer a cada una de las tres categorías de la variable dependiente (desordeSuenio). Por ejemplo, la primera observación tiene una probabilidad ajustada del 50.8\%  de pertenecer a la categoría 1, una probabilidad ajustada del 1.9\%  de pertenecer a la categoría 2 y una probabilidad ajustada del 47.3\%  de pertenecer a la categoría 3.
+```
+
+```{=tex}
+
+\section[Predicción Y Precisión Del Modelo]{\centering\bfseries Predicción Y Precisión Del Modelo}
+
+Ahora se procedera ha predecir las categorías de la variable dependiente utilizando el modelo de regresión logística multinomial ajustado, crear una tabla de clasificación y calcular la precisión de las predicciones del modelo. Esto es útil para evaluar la precisión del modelo y para hacer predicciones precisas sobre la variable dependiente.
+
+```
+
+
+```{r}
+# Predecir
+base_suenio$precticed <- predict(multinom.fit, newdata = base_suenio, "class")
+
+# Tabla de clasificacion
+ctable <- table(base_suenio$desordeSuenio, base_suenio$precticed)
+
+ctable
+
+# Precisión de cálculo: suma de elementos diagonales dividida por el total de observaciones
+round((sum(diag(ctable))/sum(ctable))*100,2)
+```
+
+```{=tex}
+El resultado muestra la tabla de clasificación de las predicciones realizadas en un modelo de regresión logística multinomial.
+
+La tabla de clasificación muestra el número de observaciones que fueron clasificadas correctamente y el número de observaciones que fueron clasificadas incorrectamente para cada una de las categorías de la variable dependiente. En este caso, la tabla de clasificación muestra que el modelo clasificó correctamente 204 observaciones en la categoría 1, 68 observaciones en la categoría 2 y 65 observaciones en la categoría 3.
+
+Además, el modelo clasificó incorrectamente 8 observaciones de la categoría 1 como categoría 2, 7 observaciones de la categoría 1 como categoría 3, 6 observaciones de la categoría 2 como categoría 1, 4 observaciones de la categoría 2 como categoría 3, 8 observaciones de la categoría 3 como categoría 1 y 4 observaciones de la categoría 3 como categoría 2.
+
+La precisión del modelo es del 90.11\% en la predicción de las categorías de la variable dependiente. Esto significa que el modelo clasificó correctamente el 90.11\%  de las observaciones en los datos de entrenamiento. La precisión del modelo se utiliza para evaluar la capacidad del modelo para predecir la variable dependiente y para comparar diferentes modelos.
+
+```
+
+
+```{=tex}
+
+\section[Aplicación De La Técnica En El Software Python]{\centering\bfseries Aplicación De La Técnica En El Software Python}
+
+
+```
+
+```{r}
+library(reticulate)
+```
+
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# cargar la base de datos
+suenio_py = pd.read_excel('basevidaOs.xlsx')
+columns_names = suenio_py.columns.values
+columns_names
+```
+
+```{python}
+
+suenio = suenio_py.drop(columns = 'presion ')
+columns_names = suenio.columns.values
+columns_names
+suenio.head()
+
+```
+
+```{python}
+print("Número de observaciones por clase")
+print(suenio['desordeSuenio'].value_counts())
+print("")
+
+print("Porcentaje de observaciones por clase")
+print(100 * suenio['desordeSuenio'].value_counts(normalize=True))
+```
+
+
+```{=tex}
+Las categprías que tiene esta variable son 1 = Ninguno, 2 = Insomnio, 3 = Apnea del Sueño. Esto quiere decir que el 58.56\% de las personas no presentan un trastorno del sueño, mientras que el 20.86\% presenta Insomnio y el 20.59\% presenta Apnea del Sueño.
+
+\section[Ajuste Del Modelo]{\centering\bfseries Ajuste Del Modelo}
+
+Se ajusta un modelo de regresión logística múltiple con el objetivo de predecir si una persona presenta un desorden del sueño en función de todas las variables disponibles.
+
+```
+
+```{python}
+X = suenio.drop(columns = 'desordeSuenio')
+y = suenio['desordeSuenio']
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+                                        X,
+                                        y.values.reshape(-1,1),
+                                        train_size   = 0.8,
+                                        random_state = 1234,
+                                        shuffle      = True
+                                    )
+                                    
+import statsmodels.api as sm
+
+
+
+df = suenio_py.drop(columns = 'presion ')
+df.head()
+
+df = df.rename(columns={'pasos diarios ': 'pasos_diarios'})
+
+# Seleccionar las columnas correspondientes
+X = df[['Genero', 'edad', 'horasSueno', 'calidadsueno', 'nivActidadFisica', 'estrés', 'CategoriaIMC', 'ritmocardiaaco', 'pasos_diarios']]
+y = df['desordeSuenio']
+
+# Ajustar el modelo de regresión logística multinomial
+model = sm.MNLogit(y, sm.add_constant(X))
+result = model.fit()
+
+# Imprimir un resumen de los resultados
+print(result.summary())
+```
+
+
+
+```{=tex}
+El Pseudo R-cuadrado es de 0.6084, lo que indica que el modelo explica el 60.84\% de la varianza en la variable dependiente.
+
+Además el coeficiente representa el logaritmo de la razón de probabilidad (odds) de que un individuo esté en la categoría "desordeSuenio=2" en comparación con la categoría de referencia (normalmente, la categoría 1) cuando todas las demás variables independientes son cero. En este caso, si el valor de para la variable Genero es de -2.260, esto significa que un aumento de una unidad en la variable se asocia con una disminución de 2.260 unidades en el logaritmo de la razón de posibilidades de pertenecer a la categoría correspondiente, manteniendo todas las demás variables constantes.
+
+```
+
+```{python}
+from sklearn.model_selection import train_test_split
+
+
+X = df[['Genero', 'edad', 'horasSueno', 'calidadsueno', 'nivActidadFisica', 'estrés', 'CategoriaIMC', 'ritmocardiaaco', 'pasos_diarios']]
+y = df['desordeSuenio']
+
+# Dividir los datos en conjuntos de entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Ajustar el modelo de regresión logística multinomial
+model = sm.MNLogit(y_train, sm.add_constant(X_train))
+result = model.fit()
+
+
+# Hacer predicciones con los datos de prueba
+y_pred = result.predict(sm.add_constant(X_test))
+
+print(y_pred)
+
+```
+
+
+```{=tex}
+
+La primera fila de la matriz muestra las probabilidades de clase para la observación número 329 en los datos de prueba. La probabilidad de pertenecer a la primera clase es 0.911404, la probabilidad de pertenecer a la segunda clase es 0.051939, y la probabilidad de pertenecer a la tercera clase es 0.036657. Esto significa que el modelo predice que la observación número 329 tiene una alta probabilidad de pertenecer a la primera clase y una baja probabilidad de pertenecer a la segunda y tercera clase.
+
+```
+
+
+
+
+
+
+
+
